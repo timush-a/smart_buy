@@ -1,5 +1,5 @@
 import logging
-from aiohttp import ClientSession
+from aiohttp import ClientSession, TCPConnector
 from typing import Tuple, Union
 
 
@@ -14,7 +14,7 @@ class Request:
         return await self.__send_request(url, 'POST', resp_in_json)
 
     async def __send_request(self, url, method='GET', resp_in_json: bool = False) -> Tuple[int, Union[dict, str]]:
-        async with ClientSession() as session:
+        async with ClientSession(connector=TCPConnector(ssl=False)) as session:
             if method == 'GET':
                 function = session.get
             else:
